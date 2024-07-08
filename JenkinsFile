@@ -1,0 +1,24 @@
+pipeline {
+    agent any
+
+  stages {
+        stage('Build') {
+            steps {
+            bat "mvn clean install"
+            }
+        }
+        stage('Execute Test') {
+            steps {
+               bat "mvn test"
+            }
+        }
+    }
+    post {
+        success {
+                 emailext attachLog: true, body: "Result: SUCCESS<br> URL: ${BUILD_URL}<br><br> Nice One! :-) \n Link to access the report: http://localhost:63342/APIAutomationTechincalPractice/target/cucumber-reports/index.html?_ijt=iah83h18cemm2upi5ssqvo6pnf", subject: "SUCCESS Jenkins ${BRANCH_NAME}: Build #${BUILD_NUMBER} for ${JOB_NAME} with Test Report", from: "jenkins@jenkins.com", to: "yogeshkolhe11@gmail.com, yogesh.kolhe@nihilent.com"
+                 echo "==========================="
+                 echo "=       SUCCESS :)        ="
+                 echo "==========================="
+             }
+    }
+}
